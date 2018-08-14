@@ -1,0 +1,213 @@
+<h2 class="heading text-center">Basic Form </h2>
+
+<div class="row mt-4">
+  <div class="col-xl">
+    <h4 >Horizontal form</h4>
+    <div class="card">
+      <div class="card-body">
+        <form class="mb-xl-4">
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Email</label>
+            <div class="col-sm-9">
+              <input type="email" class="form-control" placeholder="Enter Email">
+            </div>
+          </div>
+          <div class="form-group row">
+            <label class="col-sm-3 col-form-label">Password</label>
+            <div class="col-sm-9">
+              <input type="password" class="form-control" placeholder="Password">
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-9 offset-sm-3">
+              <div class="custom-control custom-checkbox">
+                <input type="checkbox" id="rme1" class="custom-control-input" checked>
+                <label class="custom-control-label" for="rme1">Remember Me</label>
+              </div>
+            </div>
+          </div>
+          <div class="form-group row">
+            <div class="col-sm-9 offset-sm-3">
+              <button type="submit" class="btn btn-primary px-4">Sign in</button>
+            </div>
+          </div>
+        </form>
+      </div>
+    </div>    
+  </div>
+  <div class="col-xl">
+    <h4 class="mt-4 mt-xl-0">Stacked Form</h4>
+    <div class="card">
+      <div class="card-body">
+        <form>
+          <div class="form-group">
+            <label>Email address</label>
+            <input type="email" class="form-control rounded-border" aria-describedby="emailHelp" placeholder="Enter email">
+          </div>
+          <div class="form-group">
+            <label>Password</label>
+            <input type="password" class="form-control rounded-border" placeholder="Password">
+          </div>
+          <button type="submit" class="btn btn-primary px-4">Submit</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<h4 class="mt-4">Inline Form</h4>
+<div class="card">
+  <div class="card-body">
+    <form class="form-inline">
+      <div class="form-group  ">
+        <input type="text" class="form-control" value="email@example.com" placeholder="Email">
+      </div>
+      <div class="form-group input-group ml-md-3">
+          <div class="input-group-prepend">
+            <div class="input-group-text">@</div>
+          </div>
+          <input type="text" class="form-control" placeholder="Username">
+        </div>
+      <div class="form-group ml-3 d-none d-xl-block ">
+        <input type="password" class="form-control" placeholder="Password">
+      </div>
+      <button type="submit" class="btn btn-primary ml-md-3 px-lg-4">Confirm </button>
+    </form>
+  </div>
+</div>
+
+
+<h4 class="mt-4">Form Elements</h4>
+<div class="card">
+  <div class="card-body">
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Default Input</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" placeholder="Default">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Input With Help Text</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" placeholder="Help Text">
+        <p class="form-text text-muted">Some Help Text Block</p>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Password</label>
+      <div class="col-sm-9">
+        <input type="password" class="form-control" placeholder="Password">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Placeholder</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" placeholder="Placeholder">
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Disabled</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control" placeholder="Disabled" disabled>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">Static</label>
+      <div class="col-sm-9">
+        <input type="text" class="form-control-plaintext" value="email@example.com" readonly>
+      </div>
+    </div>
+    <div class="form-group row">
+      <label class="col-sm-3 col-form-label">TextArea</label>
+      <div class="col-sm-9">
+        <textarea class="form-control" rows="3" id="comment"></textarea>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+<div class="row mt-4">
+  <div class="col-lg">
+    <h4>Types</h4>
+    <div class="card">
+      <div class="card-body">
+        <div class="form-group">
+          <input class="form-control" type="text" placeholder="Default">
+        </div>
+        <div class="form-group">
+          <input class="form-control rounded-border" type="text" placeholder="rounded border">
+        </div>
+        <div class="form-group mb-lg-4">
+          <input class="form-control no-border" type="text" placeholder="no border">
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg">
+    <h4 class="mt-4 mt-lg-0">Sizes</h4>
+    <div class="card">
+      <div class="card-body">
+        <div class="form-group">
+          <input class="form-control form-control-lg" type="text" placeholder=".form-control-lg">
+        </div>
+        <div class="form-group">
+          <input class="form-control" type="text" placeholder="Default input">
+        </div>
+        <div class="form-group">
+          <input class="form-control form-control-sm" type="text" placeholder=".form-control-sm">
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row mt-4">
+  <div class="col-lg-6">
+    <h4>Validation</h4>
+    <div class="card">
+      <div class="card-body">
+        <div class="form-group">
+          <input type="text" class="form-control is-valid" placeholder="First name" value="Mark" required>
+          <div class="valid-feedback">
+            Looks good!
+          </div>
+        </div>
+        <div class="form-group">
+          <input type="text" class="form-control is-invalid" placeholder="Username" required>
+          <div class="invalid-feedback">
+            Please choose a username.
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+  <div class="col-lg-6">
+    <h4>Input Groups</h4>
+    <div class="card">
+      <div class="card-body">
+        <label class="sr-only">Username</label>
+        <div class="input-group mb-3 mt-2">
+          <div class="input-group-prepend">
+            <div class="input-group-text">@</div>
+          </div>
+          <input type="text" class="form-control" placeholder="Username">
+        </div>
+        <div class="input-group mb-3">
+          <div class="input-group-prepend">
+            <span class="input-group-text">$</span>
+            <span class="input-group-text">0.00</span>
+          </div>
+          <input type="text" class="form-control" aria-label="Amount (to the nearest dollar)">
+        </div>
+        <div class="input-group mb-3">
+          <input type="text" class="form-control" placeholder="Recipient's username" aria-label="Recipient's username" aria-describedby="basic-addon2">
+          <div class="input-group-append">
+            <button class="btn btn-outline-secondary" type="button">Button</button>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,85 @@
+<h2 class="heading text-center">Charts</h2>
+
+<div class="row">
+  <div class="col-xl-6">
+    <h4 class="mt-4">Bar Chart</h4>
+    <div class="card">
+      <div class="card-body">
+        <canvas id="bar-chart" ></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <h4 class="mt-4">Line Chart</h4>
+    <div class="card">
+      <div class="card-body">
+        <canvas id="line-chart" ></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xl-6">
+    <h4 class="mt-4">Doughnut Chart</h4>
+    <div class="card">
+      <div class="card-body">
+        <canvas id="doughnut-chart"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <h4 class="mt-4">Mix Chart (Bar and Line)</h4>
+    <div class="card">
+      <div class="card-body">
+        <canvas id="mixed-chart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="row">
+  <div class="col-xl-6">
+    <h4 class="mt-4">Bubble Chart</h4>
+    <div class="card">
+      <div class="card-body">
+        <canvas id="bubble-chart"></canvas>
+      </div>
+    </div>
+  </div>
+  <div class="col-xl-6">
+    <h4 class="mt-4">Radar Chart</h4>
+    <div class="card">
+      <div class="card-body">
+        <canvas id="radar-chart"></canvas>
+      </div>
+    </div>
+  </div>
+</div>
+
+<h4 class="mt-4">Example</h4>
+<div class="card">
+  <div class="card-body">
+    <div class="form-group row mb-4">
+      <div class="col-sm-2">
+        <label for="">Select Type</label>
+      </div>
+      <div class="col-sm-4">
+        <ng-select [items]="['line','horizontalBar','bar','radar','polarArea','doughnut','pie']" (change)="updateChartType()" placeholder="Select"
+          [(ngModel)]="exampleChartType"></ng-select>
+      </div>
+      <div class="col-sm-4 mt-3 mt-sm-0">
+        <button class="btn btn-secondary " (click)="randomizeData()">Randomize !</button>
+      </div>
+    </div>
+    <hr>
+    <div class="exampleChart">
+      <canvas id="exampleChart"></canvas>
+    </div>
+  </div>
+</div>
+<p class="mt-4 d-block text-muted">for more info:
+  <a href="https://www.chartjs.org/">Chartjs
+    <i class="material-icons" style="font-size: .9rem">launch</i>
+  </a>
+</p>

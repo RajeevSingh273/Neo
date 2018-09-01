@@ -15,6 +15,7 @@ import { OnInit } from "@angular/core";
   styleUrls: ["./sidebar.component.scss"]
 })
 export class SidebarComponent implements OnInit {
+  queryString: string[] = ["", "", ""];
   commodities: CommodityModel[];
   categories: CategoryModel[];
   sidebarItems: SideBarItemModel[];
@@ -33,6 +34,7 @@ export class SidebarComponent implements OnInit {
 
   ngOnInit() {
     this.getCategory();
+    this.getCommodity();
     this.setSideBarItems();
   }
 
@@ -54,19 +56,39 @@ export class SidebarComponent implements OnInit {
     });
   }
 
+  getCommodity() {
+    return this.configService.getCommodity().subscribe(data => {
+      const ComodityResult = data.Items;
+      this.commodities = [];
+      let commodity: CommodityModel;
+      let subItem: SubSideBarItemModel;
+      for (const cr of ComodityResult) {
+        commodity = new CommodityModel();
+        subItem = new SideBarItemModel();
+        commodity.commodityId = cr.Commodity_ID;
+        commodity.commodityName = cr.Commodity_Name;
+        subItem.label = commodity.commodityName;
+        this.commoditiesSidebarItem.push(subItem);
+        this.commodities.push(commodity);
+      }
+    });
+  }
+
   setSideBarItems() {
     this.sidebarItems = [
       {
         link: "/category",
         label: "Category",
         icon: "toc",
+        filterName: "filterCategory",
         subItem: this.categorySidebarItem
       },
       {
         link: "/commodity",
         label: "Commodity",
         icon: "view_module",
-        subItem: []
+        filterName: "filterCommodity",
+        subItem: this.commoditiesSidebarItem
       }
     ];
   }

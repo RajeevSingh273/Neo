@@ -4,7 +4,6 @@
       <img class="brandImg" src="../../assets/img/NEO_logo.jpg" alt="Neo">
 
     </div>
-    <!-- <hr class="underline">  -->
     <div class="sidebar-body">
       <div class="sidebar-header2 align-middle">
         <span class="text-uppercase p-3">My Account</span>
@@ -13,20 +12,16 @@
         <li *ngFor="let item of sidebarItems;let i = index;" class="sidebar-item" [class.active]="temp.isActive" #temp="routerLinkActive"
           routerLinkActive [routerLinkActiveOptions]="{exact: true}">
           <a *ngIf="!item.subItem" [routerLink]="item.link"><i class="material-icons">{{item.icon}}</i><strong class="mini-hide text-capitalize ">{{item.label}}</strong>
-            <!-- <span class="arrow mini-hide" ></span> -->
           </a>
-          <!-- if menu contains children -->
           <a *ngIf="item.subItem" data-toggle="collapse" [href]="'#'+item.label.split(' ').join('')" [class.collapsed]="!temp.isActive">
             <i class="material-icons">{{item.icon}}</i>
             <strong class="text-capitalize mini-hide">{{item.label}}</strong>
             <i class="toggle-icon material-icons">expand_less</i>
           </a>
-
           <div *ngIf="!!item.subItem" class="collapse" [class.show]="temp.isActive" [id]="item.label.split(' ').join('')">
-            <input type="search" placeholder="Search.." class="form-control rounded-border" style="width: 80%; margin: 3% 10%; padding: 0% 5%; height: 0%; border-radius: .5rem;">
-            <li *ngFor="let subItem of item.subItem">
+            <input type="search" placeholder="Search.." [(ngModel)]="queryString[i]" class="form-control rounded-border" style="width: 80%; margin: 3% 10%; padding: 0% 5%; height: 0%; border-radius: .5rem;">
+            <li *ngFor="let subItem of item.subItem | filterCategory: queryString[i] ;">
               <a [routerLink]=subItem.link style="font-weight: normal; margin:0% 2%; padding:2% 2%">
-                <!-- <span class="txt-icon text-uppercase">{{subItem.icon}}</span> class="sidebar-sub-item"-->
                 <strong class="mini-hide" style="font-weight: normal"> {{subItem.label}}</strong>
               </a>
             </li>

@@ -11,7 +11,7 @@ import { Router } from '@angular/router';
 
 export class AuthComponent implements OnInit {
   isLoginEnable: false;
-  email = 'rajeevsingh.net@gmail.com';
+  email = 'thanuja.net@gmail.com';
   password = 'Free@india';
   constructor( private router: Router) {
 

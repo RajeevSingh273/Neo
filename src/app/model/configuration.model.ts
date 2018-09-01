@@ -36,6 +36,7 @@ export class SideBarItemModel {
   link: string;
   label: string;
   icon: string;
+  filterName: string;
   subItem: SubSideBarItemModel[];
 }
 

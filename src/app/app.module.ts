@@ -11,7 +11,6 @@ import { NavbarComponent } from './navbar/navbar.component';
 import { SidebarComponent } from './sidebar/sidebar.component';
 import { FooterComponent } from './footer/footer.component';
 import { AppRoutingModule } from './app-routing.module';
-import { DashboardComponent } from './dashboard/dashboard.component';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { AuthComponent } from './auth/auth.component';
 import { CategoryComponent } from './category/category.component';
@@ -20,6 +19,8 @@ import { ConfigurationComponent } from './configuration/configuration.component'
 import { NgSelectModule } from '@ng-select/ng-select';
 import { Ng2FlatpickrModule } from 'ng2-flatpickr';
 import { ConfigDomainService } from './apiGateway/config.domain.service';
+import { CategorydataPipe } from './filters/categorydata.pipe';
+import { CommoditydataPipe } from './filters/commoditydata.pipe';
 
 @NgModule({
   declarations: [
@@ -27,11 +28,12 @@ import { ConfigDomainService } from './apiGateway/config.domain.service';
     NavbarComponent,
     SidebarComponent,
     FooterComponent,
-    DashboardComponent,
     AuthComponent,
     CategoryComponent,
     CommodityComponent,
-    ConfigurationComponent
+    ConfigurationComponent,
+    CategorydataPipe,
+    CommoditydataPipe
   ],
   imports: [
     BrowserModule,

@@ -31,6 +31,13 @@
     white-space:      nowrap;
     overflow:         hidden;
   }
+  &-header2 {
+    display:          flex;
+    align-items:      center;
+    justify-content:  center;
+    color:            $white;  
+    border-bottom: 1px solid $dark; 
+  }
 
   /** body **/
   &-body {
@@ -94,7 +101,7 @@
     &.active > a {
       @include active-arrow(rgba($white,.6));
       background-color:      rgba($white,.4);
-      &:not([data-toggle = collapse]) {
+      &:hover:not([data-toggle = collapse]) {
         background-color:  $sidebar-item-active-bg;
         box-shadow:        $sidebar-item-active-box-shadow;
       }
@@ -172,5 +179,5 @@
   }
   .sidebar-header {
     height:   $navbar-height - 1px;
-  }
+  }  
 }

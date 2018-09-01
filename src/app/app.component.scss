@@ -7,8 +7,8 @@
 .main-panel{
   transition:   $transition-base;
   .panel-content {
-    margin:       $navbar-height;
-    margin-top:   $navbar-height * 2;
+    margin:       $navbar-height/3;
+    margin-top:   $navbar-height * 1.1;   
   }
 }
 
@@ -19,7 +19,7 @@
   .main-panel {
     width:  calc(100% - #{$sidebar-width-lg});
     .panel-content {
-      margin:       $navbar-height / 2;
+      margin:       $navbar-height / 4;
       margin-top:   $navbar-height  + 20px;
     }
   }

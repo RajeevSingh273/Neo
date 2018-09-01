@@ -83,8 +83,9 @@ $pagination-active-color:                        $primary;
   display: table;
   width: 100%;
   text-align: center;
+ 
   .nav-item {
-    display: table-cell;
+    display: table-cell; color: blue;
     .nav-link{
       border:none;
       &:hover:not(.active) {

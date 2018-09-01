@@ -1,5 +1,6 @@
-import { Component, OnInit, Renderer2, AfterViewChecked } from '@angular/core';
+import { Component, OnInit, Renderer2, AfterViewChecked, ElementRef } from '@angular/core';
 import { Router, RouteConfigLoadStart, RouteConfigLoadEnd, NavigationEnd } from '@angular/router';
+import { LocationStrategy, PlatformLocation, Location } from '@angular/common';
 import * as NProgress from 'nprogress';
 import { CommonService } from './common.service';
 
@@ -9,20 +10,37 @@ import { CommonService } from './common.service';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit, AfterViewChecked {
-
+  private _title: any;
+  private _navbar: HTMLElement;
   pagesComponentRoute = false;
   commonService;
 
-  constructor(private router: Router,private cs:CommonService, private renderer: Renderer2) { 
+  constructor(private router: Router,
+    private cs: CommonService,
+    private renderer: Renderer2,
+    private element: ElementRef,
+    public location: Location) {
     this.commonService = cs;
     NProgress.configure({ showSpinner: false });
     this.renderer.addClass(document.body, 'preload');
   }
-  
+
   ngOnInit() {
+    this._title = this.location.prepareExternalUrl(this.location.path());
+    console.log(this._title);
+
+
     this.router.events.subscribe((obj: any) => {
-      if(!!obj.url) {
-        this.pagesComponentRoute = obj.url.includes('/pages');
+      if (!!obj.url) {
+        if (obj.url.includes('/pages')) {
+          this.pagesComponentRoute = true;
+        } else {
+          if (this._title === '/' || this._title === '/auth') {
+            this.pagesComponentRoute = true;
+          } else {
+            this.pagesComponentRoute = false;
+          }
+        }
       }
       if (obj instanceof RouteConfigLoadStart) {
         NProgress.start();

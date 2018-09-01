@@ -1,6 +1,6 @@
+import { CommonService } from './../services/common.service';
 import { Component, Output, EventEmitter, Input, OnChanges, OnInit } from '@angular/core';
 import { HostListener } from '@angular/core';
-import { CommonService } from '../common.service';
 import { Router } from '../../../node_modules/@angular/router';
 
 declare var $: any;

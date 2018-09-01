@@ -1,3 +1,4 @@
+import { CommonService } from './services/common.service';
 import { NeoAuthGuard } from './guard/auth.guard';
 import { BrowserModule } from '@angular/platform-browser';
 import { NgModule } from '@angular/core';
@@ -44,7 +45,7 @@ import { ConfigDomainService } from './apiGateway/config.domain.service';
     Ng2FlatpickrModule,
     NgSelectModule
   ],
-  providers: [NeoAuthGuard, ConfigDomainService],
+  providers: [NeoAuthGuard, ConfigDomainService, CommonService],
   bootstrap: [AppComponent]
 })
-export class AppModule { }
+export class AppModule {}

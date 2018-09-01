@@ -21,12 +21,15 @@
             <strong class="text-capitalize mini-hide">{{item.label}}</strong>
             <i class="toggle-icon material-icons">expand_less</i>
           </a>
-          
+
           <div *ngIf="!!item.subItem" class="collapse" [class.show]="temp.isActive" [id]="item.label.split(' ').join('')">
-              <input  type="search" placeholder="Search for a vegetable..">
-            <li *ngFor="let subItem of item.subItem" class="sidebar-sub-item" routerLinkActive="active"><a [routerLink]=subItem.link><span
-                  class="txt-icon text-uppercase">{{subItem.icon}}</span><strong class="text-capitalize mini-hide"> {{subItem.label}}
-                  </strong><span class="arrow mini-hide"></span></a></li>
+            <input type="search" placeholder="Search.." class="form-control rounded-border" style="width: 80%; margin: 3% 10%; padding: 0% 5%; height: 0%; border-radius: .5rem;">
+            <li *ngFor="let subItem of item.subItem">
+              <a [routerLink]=subItem.link style="font-weight: normal; margin:0% 2%; padding:2% 2%">
+                <!-- <span class="txt-icon text-uppercase">{{subItem.icon}}</span> class="sidebar-sub-item"-->
+                <strong class="mini-hide" style="font-weight: normal"> {{subItem.label}}</strong>
+              </a>
+            </li>
           </div>
         </li>
       </ul>

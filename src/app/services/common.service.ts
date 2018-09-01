@@ -1,52 +1,76 @@
 import { Injectable } from '@angular/core';
 import { Observable, Subject } from 'rxjs';
-import { CommodityModel, CategoryModel, ThresholdModel } from './../model/configuration.model';
+import {
+  CommodityModel,
+  CategoryModel,
+  ThresholdModel
+} from './../model/configuration.model';
 
+@Injectable({
+  providedIn: 'root'
+})
+export class CommonService {
+  navbarToggleValue: boolean;
+  sidebarToggleValue: boolean;
+  sidebarMiniToggleValue: boolean;
 
-@Injectable()
-export class GeoFenceService {
-    commoditiesChanged = new Subject<CommodityModel[]>();
-    private commodities: CommodityModel[] = [];
+  commoditiesChanged = new Subject<CommodityModel[]>();
+  private commodities: CommodityModel[] = [];
 
-    categoriesChanged = new Subject<CategoryModel[]>();
-    private categories: CategoryModel[] = [];
+  categoriesChanged = new Subject<CategoryModel[]>();
+  private categories: CategoryModel[] = [];
 
-    constructor() { }
+  constructor() {
+    this.navbarToggleValue = false;
+    this.sidebarToggleValue = false;
+    this.sidebarMiniToggleValue = false;
+  }
 
-    setCommodities(commodities: CommodityModel[]) {
-        this.commodities = commodities;
-        this.commoditiesChanged.next(this.commodities.slice());
-    }
+  sidebarToggle(): void {
+    this.sidebarToggleValue = !this.sidebarToggleValue;
+  }
 
-    reloadCommoditie() {
-        this.commoditiesChanged.next(this.commodities.slice());
-    }
+  sidebarMiniToggle(): void {
+    this.sidebarMiniToggleValue = !this.sidebarMiniToggleValue;
+  }
 
-    getCommodities() {
-        return this.commodities.slice();
-    }
+  navbarToggle(): void {
+    this.navbarToggleValue = !this.navbarToggleValue;
+  }
 
-    addCommodities(commodity: CommodityModel) {
-        this.commodities.push(commodity);
-        this.commoditiesChanged.next(this.commodities.slice());
-    }
+  setCommodities(commodities: CommodityModel[]) {
+    this.commodities = commodities;
+    this.commoditiesChanged.next(this.commodities.slice());
+  }
 
-    setCategories(categories: CategoryModel[]) {
-        this.categories = categories;
-        this.categoriesChanged.next(this.categories.slice());
-    }
+  reloadCommoditie() {
+    this.commoditiesChanged.next(this.commodities.slice());
+  }
 
-    reloadCategories() {
-        this.categoriesChanged.next(this.categories.slice());
-    }
+  getCommodities() {
+    return this.commodities.slice();
+  }
 
-    getCategories() {
-        return this.categories.slice();
-    }
+  addCommodities(commodity: CommodityModel) {
+    this.commodities.push(commodity);
+    this.commoditiesChanged.next(this.commodities.slice());
+  }
 
-    addCategories(commodity: CategoryModel) {
-        this.categories.push(commodity);
-        this.categoriesChanged.next(this.categories.slice());
-    }
+  setCategories(categories: CategoryModel[]) {
+    this.categories = categories;
+    this.categoriesChanged.next(this.categories.slice());
+  }
 
+  reloadCategories() {
+    this.categoriesChanged.next(this.categories.slice());
+  }
+
+  getCategories() {
+    return this.categories.slice();
+  }
+
+  addCategories(commodity: CategoryModel) {
+    this.categories.push(commodity);
+    this.categoriesChanged.next(this.categories.slice());
+  }
 }

@@ -2,7 +2,7 @@ import { Component, OnInit, Renderer2, AfterViewChecked, ElementRef } from '@ang
 import { Router, RouteConfigLoadStart, RouteConfigLoadEnd, NavigationEnd } from '@angular/router';
 import { LocationStrategy, PlatformLocation, Location } from '@angular/common';
 import * as NProgress from 'nprogress';
-import { CommonService } from './common.service';
+import { CommonService } from './services/common.service';
 
 @Component({
   selector: 'app-root',

@@ -6,7 +6,6 @@ import { SubSideBarItemModel } from "./../model/configuration.model";
 })
 export class CommoditydataPipe implements PipeTransform {
   transform(items: any[], filter: any): any {
-    console.log(filter);
     if (!items || !filter) {
       return items;
     }

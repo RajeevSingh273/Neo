@@ -8,7 +8,7 @@ import { RequestOptions } from '@angular/http';
 const API_URL = 'https://em6cjulwtf.execute-api.ap-south-1.amazonaws.com/NeoApi/';
 
 @Injectable()
-export class ConfigDomainService {
+export class AuthDomainService {
     constructor(private http: HttpClient) { }
 
     Auth(): any {

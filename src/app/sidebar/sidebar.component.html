@@ -21,7 +21,7 @@
           <div *ngIf="!!item.subItem" class="collapse" [class.show]="!temp.isActive" [id]="item.label.split(' ').join('')">
             <input type="search" placeholder="Search.." [(ngModel)]="queryString[i]" class="form-control rounded-border" style="width: 80%; margin: 3% 10%; padding: 0% 5%; height: 0%; border-radius: .5rem;">
             <li *ngFor="let subItem of item.subItem | filterCategory: queryString[i] ;">
-              <a [routerLink]=subItem.link style="font-weight: normal; margin:0% 2%; padding:2% 2%">
+              <a [routerLink]=subItem.link style="font-weight: normal; margin:0% 2%; padding:2% 2%"  (click)="filterdata(item.filterName,subItem.label)">
                 <strong class="mini-hide" style="font-weight: normal"> {{subItem.label}}</strong>
               </a>
             </li>

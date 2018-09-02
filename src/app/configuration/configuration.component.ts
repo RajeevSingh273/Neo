@@ -1,11 +1,12 @@
+import { ConfigurationService } from "./../services/configuration.service";
 import { CommonService } from "./../services/common.service";
-
 import { ConfigDomainService } from "./../apiGateway/config.domain.service";
 import {
   ConfigurationModel,
   CommodityModel,
   CategoryModel,
-  ThresholdModel
+  ThresholdModel,
+  UniqueThresholds
 } from "./../model/configuration.model";
 import {
   Component,
@@ -27,6 +28,7 @@ import { BsModalRef } from "ngx-bootstrap/modal/bs-modal-ref.service";
 import { NgSelectModule } from "@ng-select/ng-select";
 import { FlatpickrOptions } from "ng2-flatpickr";
 import { combineLatest } from "rxjs/operators";
+import { Subscription } from "rxjs";
 
 @Component({
   selector: "app-configuration",
@@ -35,6 +37,7 @@ import { combineLatest } from "rxjs/operators";
   providers: [ConfigDomainService]
 })
 export class ConfigurationComponent implements OnInit {
+  configurationSubscription: Subscription;
   isEdit = false;
   btnSave = "Save New Configuration";
   dateTime: FlatpickrOptions = {
@@ -54,13 +57,15 @@ export class ConfigurationComponent implements OnInit {
   commodities: CommodityModel[];
   categories: CategoryModel[];
   thresholds: ThresholdModel[];
+  uniqueThresholds: UniqueThresholds[];
   selectedCommodity = 1;
 
   constructor(
     private modalService: BsModalService,
     private formBuilder: FormBuilder,
     private configService: ConfigDomainService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private configurationService: ConfigurationService
   ) {}
 
   ngOnInit() {
@@ -68,7 +73,6 @@ export class ConfigurationComponent implements OnInit {
     this.getCategory();
     this.getConfigs();
     this.getThreshold();
-    // this.categories = this.commonService.getCategories();
   }
 
   getCategory() {
@@ -116,7 +120,7 @@ export class ConfigurationComponent implements OnInit {
         }
       }
       this.commonService.setCommodities(this.commodities);
-      console.log(this.commodities);
+      // console.log(this.commodities);
     });
   }
 
@@ -124,6 +128,7 @@ export class ConfigurationComponent implements OnInit {
     return this.configService.getThreshold().subscribe(data => {
       const CategoryResult = data;
       this.thresholds = [];
+      this.uniqueThresholds = [];
       let threshold: ThresholdModel;
       for (const cr of CategoryResult) {
         threshold = new ThresholdModel();
@@ -131,32 +136,29 @@ export class ConfigurationComponent implements OnInit {
         threshold.thresholdId = cr.Threshold_ID;
         threshold.thresholdName = cr.Threshold_Name;
         threshold.thresholdValue = cr.Threshold_value;
+        if (
+          this.uniqueThresholds.findIndex(
+            t => t.thresholdName === threshold.thresholdName
+          ) === -1
+        ) {
+          this.uniqueThresholds.push({
+            thresholdId: threshold.thresholdId,
+            thresholdName: threshold.thresholdName
+          });
+        }
+        // console.log(this.uniqueThresholds);
         this.thresholds.push(threshold);
       }
     });
   }
 
   getConfigs() {
-    return this.configService.getConfig().subscribe(data => {
-      const ConfigResult: any = data.Items;
-      this.configs = [];
-      let config: ConfigurationModel;
-      for (const cr of ConfigResult) {
-        config = new ConfigurationModel();
-        config.configId = cr.Configuration_ID;
-        config.categoryId = cr.Category_Id;
-        config.categoryName = cr.Category_Name;
-        config.commodityId = cr.Commodity_Id;
-        config.commodityName = cr.Commodity_Name;
-        config.thresholdId = cr.Threshold_Id;
-        config.thresholdName = cr.Threshold_Name;
-        config.thresholdRange = cr.Threshold_Range;
-        config.source = cr.Source;
-        config.userId = cr.User_ID;
-        config.email = cr.User_Email;
-        this.configs.push(config);
+    this.configurationService.getConfigs();
+    this.configurationSubscription = this.configurationService.configurationsChanged.subscribe(
+      (configuration: ConfigurationModel[]) => {
+        this.configs = configuration;
       }
-    });
+    );
   }
 
   openModal(template: TemplateRef<any>) {
@@ -183,8 +185,8 @@ export class ConfigurationComponent implements OnInit {
     this.isEdit = true;
     this.btnSave = "Edit Configuration";
     this.openModal(template);
-    console.log("============================");
-    console.log(config);
+    // console.log("============================");
+    // console.log(config);
     this.getCommodity(config.source);
     this.myForm = this.formBuilder.group({
       userId: config.userId,
@@ -206,20 +208,20 @@ export class ConfigurationComponent implements OnInit {
         this.selectedConfigs.push(element.configId);
       }
     });
-    this.selectedConfigs.forEach(element => {
-      const index = this.configs
-        .map(function(e) {
-          return e.configId;
-        })
-        .indexOf(element);
-      this.configs.splice(index, 1);
-    });
 
-    console.log(this.selectedConfigsParams);
-
-    this.configService.deleteConfig(this.selectedConfigs).subscribe(data => {
-      console.log(data);
-    });
+    this.configService
+      .deleteConfig(this.selectedConfigs)
+      .subscribe((data: any) => {
+        this.dataReslt = data;
+        this.selectedConfigs.forEach(element => {
+          const index = this.configs
+            .map(function(e) {
+              return e.configId;
+            })
+            .indexOf(element);
+          this.configs.splice(index, 1);
+        });
+      }, error => (this.dataReslt = error));
   }
 
   submitForm(template: any) {
@@ -243,12 +245,11 @@ export class ConfigurationComponent implements OnInit {
       ).thresholdValue;
       config.source = this.myForm.value.ddlSource;
       config.email = this.myForm.value.txtEmail;
-      console.log(config);
       this.configService.saveConfig(config).subscribe(data => {
         this.dataReslt = data;
         config.configId = this.dataReslt.body.Configuration_ID;
         this.configs.push(config);
-      });
+      }, error => this.dataReslt = error);
     } else {
       config.configId = this.myForm.value.Id;
       config.categoryId = this.myForm.value.ddlCatagory;
@@ -269,17 +270,16 @@ export class ConfigurationComponent implements OnInit {
       config.source = this.myForm.value.ddlSource;
       config.userId = this.myForm.value.userId;
       config.email = this.myForm.value.txtEmail;
-      console.log(config);
+      // console.log(config);
       this.configService.editConfig(config).subscribe(data => {
-        console.log(data);
+        // console.log(data);
         const updateItem = this.configs.find(
           r => r.configId === config.configId
         );
         const index = this.configs.indexOf(updateItem);
         this.configs[index] = config;
-      });
+      }, error => this.dataReslt = error);
     }
-
     this.modalRef.hide();
   }
 
@@ -290,7 +290,7 @@ export class ConfigurationComponent implements OnInit {
   }
 
   checkIfAllSelected() {
-    console.log(this.selectedConfigs);
+    // console.log(this.selectedConfigs);
     this.selectedAll = this.configs.every(function(item: any) {
       return item.selected === true;
     });

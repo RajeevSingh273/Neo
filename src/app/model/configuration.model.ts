@@ -32,6 +32,11 @@ export class ThresholdModel {
   thresholdValue: string;
 }
 
+export class UniqueThresholds {
+  thresholdId: number;
+  thresholdName: string;
+}
+
 export class SideBarItemModel {
   link: string;
   label: string;

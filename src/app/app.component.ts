@@ -1,13 +1,24 @@
-import { Component, OnInit, Renderer2, AfterViewChecked, ElementRef } from '@angular/core';
-import { Router, RouteConfigLoadStart, RouteConfigLoadEnd, NavigationEnd } from '@angular/router';
-import { LocationStrategy, PlatformLocation, Location } from '@angular/common';
-import * as NProgress from 'nprogress';
-import { CommonService } from './services/common.service';
+import {
+  Component,
+  OnInit,
+  Renderer2,
+  AfterViewChecked,
+  ElementRef
+} from "@angular/core";
+import {
+  Router,
+  RouteConfigLoadStart,
+  RouteConfigLoadEnd,
+  NavigationEnd
+} from "@angular/router";
+import { LocationStrategy, PlatformLocation, Location } from "@angular/common";
+import * as NProgress from "nprogress";
+import { CommonService } from "./services/common.service";
 
 @Component({
-  selector: 'app-root',
-  templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  selector: "app-root",
+  templateUrl: "./app.component.html",
+  styleUrls: ["./app.component.scss"]
 })
 export class AppComponent implements OnInit, AfterViewChecked {
   private _title: any;
@@ -15,31 +26,27 @@ export class AppComponent implements OnInit, AfterViewChecked {
   pagesComponentRoute = false;
   commonService;
 
-  constructor(private router: Router,
+  constructor(
+    private router: Router,
     private cs: CommonService,
     private renderer: Renderer2,
     private element: ElementRef,
-    public location: Location) {
+    public location: Location
+  ) {
     this.commonService = cs;
     NProgress.configure({ showSpinner: false });
-    this.renderer.addClass(document.body, 'preload');
+    this.renderer.addClass(document.body, "preload");
   }
 
   ngOnInit() {
-    this._title = this.location.prepareExternalUrl(this.location.path());
-    console.log(this._title);
-
-
     this.router.events.subscribe((obj: any) => {
       if (!!obj.url) {
-        if (obj.url.includes('/pages')) {
+        if (this.router.url.includes("/pages")) {
+          this.pagesComponentRoute = true;
+        } else if (obj.url === "/" || this.router.url.includes("/auth")) {
           this.pagesComponentRoute = true;
         } else {
-          if (this._title === '/' || this._title === '/auth') {
-            this.pagesComponentRoute = true;
-          } else {
-            this.pagesComponentRoute = false;
-          }
+          this.pagesComponentRoute = false;
         }
       }
       if (obj instanceof RouteConfigLoadStart) {
@@ -61,8 +68,7 @@ export class AppComponent implements OnInit, AfterViewChecked {
 
   ngAfterViewChecked() {
     setTimeout(() => {
-      this.renderer.removeClass(document.body, 'preload');
+      this.renderer.removeClass(document.body, "preload");
     }, 300);
   }
-
 }

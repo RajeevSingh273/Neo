@@ -1,8 +1,10 @@
+import { ConfigurationService } from "./../services/configuration.service";
 import {
   CommodityModel,
   CategoryModel,
   SideBarItemModel,
-  SubSideBarItemModel
+  SubSideBarItemModel,
+  ConfigurationModel
 } from "./../model/configuration.model";
 import { ConfigDomainService } from "./../apiGateway/config.domain.service";
 import { CommonService } from "./../services/common.service";
@@ -22,10 +24,13 @@ export class SidebarComponent implements OnInit {
   sideBarItem: SubSideBarItemModel[];
   categorySidebarItem: SubSideBarItemModel[];
   commoditiesSidebarItem: SubSideBarItemModel[];
+  configs: ConfigurationModel[];
+  configsFiltered: ConfigurationModel[];
 
   constructor(
     private configService: ConfigDomainService,
-    private commonService: CommonService
+    private commonService: CommonService,
+    private configurationService: ConfigurationService
   ) {
     this.sideBarItem = [];
     this.categorySidebarItem = [];
@@ -72,6 +77,20 @@ export class SidebarComponent implements OnInit {
         this.commodities.push(commodity);
       }
     });
+  }
+
+  filterdata(item: string, event: string) {
+    this.configs = this.configurationService.getConfiguration();
+    this.configsFiltered = this.configurationService.getConfigurationFiltered();
+    if (item === "filterCategory") {
+      this.configurationService.setConfiguration(
+        this.configsFiltered.filter(singleItem => singleItem.categoryName.toLowerCase().includes(event.toLowerCase())).slice()
+      );
+    } else if (item === "filterCommodity") {
+      this.configurationService.setConfiguration(
+        this.configsFiltered.filter(singleItem => singleItem.commodityName.toLowerCase().includes(event.toLowerCase())).slice()
+      );
+    }
   }
 
   setSideBarItems() {

@@ -9,6 +9,7 @@ import { ConfigurationComponent } from './configuration/configuration.component'
 
 const routes: Routes = [
   { path: '', component: AuthComponent },
+  { path: 'auth', component: AuthComponent },
   {
     path: 'configuration', component: ConfigurationComponent
   },

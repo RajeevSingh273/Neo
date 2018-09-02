@@ -97,7 +97,7 @@
         </div>
         <div class="form-group">
           <ng-select class="p-1" formControlName="ddlThreshold">
-            <ng-option *ngFor="let threshold of thresholds" [value]="threshold.thresholdId">{{threshold.thresholdName}}</ng-option>
+            <ng-option *ngFor="let threshold of uniqueThresholds" [value]="threshold.thresholdId">{{threshold.thresholdName}}</ng-option>
           </ng-select>
         </div>
         <div class="form-group">

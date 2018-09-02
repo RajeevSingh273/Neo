@@ -1,51 +1,74 @@
-
-import { Injectable, OnInit } from '@angular/core';
-import { ConfigDomainService } from '../apiGateway/config.domain.service';
-import { ConfigurationModel } from '../model/configuration.model';
+import { ConfigDomainService } from "./../apiGateway/config.domain.service";
+import { Subject } from "rxjs";
+import { Injectable, OnInit } from "@angular/core";
+import { ConfigurationModel } from "../model/configuration.model";
 
 @Injectable({
-    providedIn: 'root'
+  providedIn: "root"
 })
-export class ConfiguratioService implements OnInit {
+export class ConfigurationService {
+  configurations: ConfigurationModel[];
+  configurationsFiltered: ConfigurationModel[];
+  configurationsChanged = new Subject<ConfigurationModel[]>();
+  private commodities: ConfigurationModel[] = [];
 
-    configs: ConfigurationModel[];
-    configtest: any;
-    constructor(private configDomainService: ConfigDomainService) { }
+  constructor(private configService: ConfigDomainService) {
+    this.getConfigs();
+  }
 
-    ngOnInit() {
-        // this.configs = new ConfigurationModel();
-    }
+  getConfigs() {
+    return this.configService.getConfig().subscribe(data => {
+      const ConfigResult: any = data.Items;
+      this.configurations = [];
+      this.configurationsFiltered = [];
+      let config: ConfigurationModel;
+      for (const cr of ConfigResult) {
+        config = new ConfigurationModel();
+        config.configId = cr.Configuration_ID;
+        config.categoryId = cr.Category_Id;
+        config.categoryName = cr.Category_Name;
+        config.commodityId = cr.Commodity_Id;
+        config.commodityName = cr.Commodity_Name;
+        config.thresholdId = cr.Threshold_Id;
+        config.thresholdName = cr.Threshold_Name;
+        config.thresholdRange = cr.Threshold_Range;
+        config.source = cr.Source;
+        config.userId = cr.User_ID;
+        config.email = cr.User_Email;
+        this.configurations.push(config);
+        this.configurationsFiltered.push(config);
+      }
+      this.setConfiguration(this.configurations);
+      this.setConfigurationFiltered(this.configurationsFiltered);
+    });
+  }
 
+  setConfiguration(configurations: ConfigurationModel[]) {
+    //this.configurationsFiltered = configurations;
+    this.configurations = configurations;
+    this.configurationsChanged.next(this.configurations.slice());
+  }
 
-    getConfiguration() {
-        this.configDomainService.getConfig().subscribe(
-            data => {
-                this.configtest = data;
-                console.error(data);
-            },
-            err => console.error(err),
-            () => console.log('users loaded.'));
+  setConfigurationFiltered(configurations: ConfigurationModel[]) {
+    this.configurationsFiltered = configurations;
+    // this.configurations = configurations;
+    this.configurationsChanged.next(this.configurationsFiltered.slice());
+  }
 
-        // return new Promise(resolve => resolve(Configurations));
-    }
+  reloadConfiguration() {
+    this.configurationsChanged.next(this.configurations.slice());
+  }
 
-    add(data) {
-        return new Promise(resolve => {
-            // Configurations.push(data);
-            resolve(data);
-        });
-    }
+  getConfiguration() {
+    return this.configurations.slice();
+  }
 
-    put(changed) {
-        // return new Promise(resolve => {
-        //     // const index = Configurations.findIndex(c => c.Id === changed.Id);
-        //     // Configurations[index].source = changed.source;
-        //     // Configurations[index].category = changed.category;
-        //     // Configurations[index].commodity = changed.commodity;
-        //     // Configurations[index].metric = changed.metric;
-        //     // Configurations[index].thresholeBechmark = changed.thresholeBechmark;
-        //     // Configurations[index].email = changed.email;
-        //     // resolve(changed);
-        // });
-    }
+  getConfigurationFiltered() {
+    return this.configurationsFiltered.slice();
+  }
+
+  addConfiguration(configuration: ConfigurationModel) {
+    this.configurations.push(configuration);
+    this.configurationsChanged.next(this.configurations.slice());
+  }
 }

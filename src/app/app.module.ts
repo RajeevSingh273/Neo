@@ -21,6 +21,7 @@ import { Ng2FlatpickrModule } from 'ng2-flatpickr';
 import { ConfigDomainService } from './apiGateway/config.domain.service';
 import { CategorydataPipe } from './filters/categorydata.pipe';
 import { CommoditydataPipe } from './filters/commoditydata.pipe';
+import { ConfigurationService } from "src/app/services/configuration.service";
 
 @NgModule({
   declarations: [
@@ -47,7 +48,7 @@ import { CommoditydataPipe } from './filters/commoditydata.pipe';
     Ng2FlatpickrModule,
     NgSelectModule
   ],
-  providers: [NeoAuthGuard, ConfigDomainService, CommonService],
+  providers: [NeoAuthGuard, ConfigDomainService, CommonService,ConfigurationService],
   bootstrap: [AppComponent]
 })
 export class AppModule {}

@@ -1,15 +1,22 @@
-<div class="row" style="margin-bottom: 1%">
-  <div class="col-md-7">
+<div class="row top-bar" style="margin-bottom: 1%" style="margin-bottom: 1%; margin-top: -1% !important; height: 60px;padding: 5px;">
+  <div class="col-md-7" style="padding:10px;">
     <div class="text-left">
-      <button type="button" class="btn btn-info btn-sm" (click)="createConfiguration(template)">
+      <!--<button type="button" class="btn btn-info btn-sm" (click)="createConfiguration(template)">
         <i class="material-icons" style="background:rgba(0,0,0,0.15);">add</i>&nbsp;&nbsp;Add</button>&nbsp;&nbsp;
       <button type="button" class="btn btn-info btn-sm" (click)="deleteConfiguration()">
-        <i class="material-icons" style="background:rgba(0,0,0,0.15);">delete</i>&nbsp;&nbsp;Delete</button>
+        <i class="material-icons" style="background:rgba(0,0,0,0.15);">delete</i>&nbsp;&nbsp;Delete</button>-->
+      <div class="btn btn-primary btn-sm" (click)="createConfiguration(template)" style="position:relative; width:100px;">
+        <i class="material-icons" style="position:absolute; height:100%; top:0; left:0; padding-top:3px;background-color:rgba(0,0,0,0.15);">add</i>        &nbsp;&nbsp;Add
+      </div>
+      &nbsp;&nbsp;
+      <div class="btn btn-primary btn-sm" (click)="deleteConfiguration(template)" style="position:relative; width:100px;">
+        <i class="material-icons" style="position:absolute; height:100%; top:0; left:0; padding-top:3px;background-color:rgba(0,0,0,0.15);">delete</i>        &nbsp;&nbsp;Delete
+      </div>
     </div>
   </div>
-  <div class="col-md-5">
+  <div class="col-md-5" style="padding:10px; background-color:#D8DEE1; height:54px; ">
     <div class="row">
-      <div class="col-md-4 input-group">
+      <!-- <div class="col-md-4 input-group">
         <input type="text" id="testdateFrom" name="testdate" placeholder="From" class="form-control" value="">
         <label class="input-group-addon btn" for="testdateFrom">
           <span class="fa fa-calendar"></span>
@@ -20,8 +27,22 @@
         <label class="input-group-addon btn" for="testdateTo">
           <span class="fa fa-calendar"></span>
         </label>
+      </div>-->
+      &nbsp;&nbsp;&nbsp;&nbsp;
+      <div class="input-group input-group-sm" style="width:100px;">
+        <input type="text" class="form-control" placeholder="from">
+        <span class="input-group-btn input-group-btn-sm">
+            <button class="btn btn-default btn-sm" type="button"><span class="fa fa-calendar"></span></button>
+        </span>
       </div>
-      <div class="col-md-4">
+      &nbsp;&nbsp;
+      <div class="input-group input-group-sm" style="width:100px;">
+        <input type="text" class="form-control" placeholder="to">
+        <span class="input-group-btn input-group-btn-sm">
+            <button class="btn btn-default btn-sm" type="button"><span class="fa fa-calendar"></span></button>
+        </span>
+      </div>
+      <div class="col-md-6 text-right">
         <div class="text-right">
           <button type="button" class="btn btn-dark btn-sm">
             Alert Log</button>
@@ -57,8 +78,11 @@
         <td>{{config.thresholdRange}}</td>
         <td>{{config.source}}</td>
         <td>
-          <button type="button" class="btn btn-danger btn-sm" (click)="editConfiguration(config,template)">
-            <i class="material-icons" style="background:rgba(0,0,0,0.15);">create</i>&nbsp;&nbsp;Edit</button>
+          <!--<button type="button" class="btn btn-danger btn-sm" (click)="editConfiguration(config,template)">
+            <i class="material-icons" style="background:rgba(0,0,0,0.15);">create</i>&nbsp;&nbsp;Edit</button>-->
+          <div class="btn btn-danger btn-sm" (click)="editConfiguration(config,template)" style="position:relative; width:80px; text-align: left">
+            <i class="material-icons" style="position:absolute; height:100%; top:0; right:0; padding-top:3px;background-color:rgba(0,0,0,0.15);">create</i>            Edit&nbsp;&nbsp;
+          </div>
         </td>
       </tr>
     </tbody>
@@ -66,19 +90,19 @@
 </div>
 
 <ng-template #template>
-  <div class="modal-header" style="background-color: #0C73E2; color:wheat; text-align: center">
-    <h5 class="modal-title">Add Configuration</h5>
+  <div class="modal-header text-center" style="background-color: #0C73E2; color:wheat; text-align: center">
+    <h5 class="modal-title" style="width:100%">Configure Alerts</h5>
     <button type="button" class="close pull-right" aria-label="Close" (click)="modalRef.hide()">
       <span aria-hidden="true">&times;</span>
     </button>
   </div>
-  <form [formGroup]="myForm" (ngSubmit)="submitForm()">
+  <form [formGroup]="ConfigurationForm" (ngSubmit)="submitForm()">
     <div class="modal-boy">
       <div class="container">
         <div class="form-group">
           <!-- <ng-select [items]="sources" placeholder="Select Source" formControlName="ddlSource" class="p-1">
           </ng-select> -->
-          <ng-select class="p-1" formControlName="ddlSource">
+          <ng-select class="p-1 custom" formControlName="ddlSource">
             <ng-option *ngFor="let source of sources" [value]="source">{{source}}</ng-option>
           </ng-select>
         </div>
@@ -86,33 +110,37 @@
           <!-- <ng-select [items]="categories" bindLabel="categoryName" bindValue="categoryId" placeholder="Select Catagory" formControlName="ddlCatagory"
             class="p-1">
           </ng-select> -->
-          <ng-select class="p-1" formControlName="ddlCatagory" (change)="onChangeCatagory($event)">
+          <ng-select class="p-1 custom" formControlName="ddlCatagory" (change)="onChangeCatagory($event)">
             <ng-option *ngFor="let category of categories" [value]="category.categoryId">{{category.categoryName}}</ng-option>
           </ng-select>
         </div>
         <div class="form-group">
-          <ng-select class="p-1" formControlName="ddlCommodity">
+          <ng-select class="p-1 custom" formControlName="ddlCommodity">
             <ng-option *ngFor="let commodity of commodities" [value]="commodity.commodityId">{{commodity.commodityName}}</ng-option>
           </ng-select>
         </div>
         <div class="form-group">
-          <ng-select class="p-1" formControlName="ddlThreshold">
-            <ng-option *ngFor="let threshold of uniqueThresholds" [value]="threshold.thresholdId">{{threshold.thresholdName}}</ng-option>
+          <ng-select class="p-1 custom" formControlName="ddlThreshold">
+            <ng-option *ngFor="let threshold of thresholds" [value]="threshold.thresholdId">{{threshold.thresholdName}}</ng-option>
           </ng-select>
         </div>
         <div class="form-group">
-          <ng-select class="p-1" formControlName="ddlThresholdRange">
+          <ng-select class="p-1 custom" formControlName="ddlThresholdRange">
             <ng-option *ngFor="let threshold of thresholds" [value]="threshold.thresholdId">{{threshold.thresholdValue}}</ng-option>
           </ng-select>
         </div>
 
         <div class="form-group">
-          <input type="email" class="form-control" placeholder="Email" formControlName="txtEmail">
+          <input type="email" class="form-control shadow" placeholder="Email" formControlName="txtEmail" [ngClass]="{ 'is-invalid': submitted && f.txtEmail.errors }">
+          <div *ngIf="submitted && f.txtEmail.invalid" class="invalid-feedback">
+            <div *ngIf="f.txtEmail.errors.required">Email is required</div>
+            <div *ngIf="f.txtEmail.errors.email">Email must be a valid email address</div>
+          </div>
         </div>
       </div>
     </div>
-    <div class="modal-footer">
-      <button class="btn btn-info" [disabled]="!myForm.valid">
+    <div class="modal-footer text-center">
+      <button class="btn btn-info" [disabled]="!ConfigurationForm.valid">
         {{btnSave}}
       </button>
     </div>

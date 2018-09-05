@@ -46,7 +46,8 @@ export class ConfigurationComponent implements OnInit {
   };
   modalRef: BsModalRef;
   @Input() id: number;
-  myForm: FormGroup;
+  ConfigurationForm: FormGroup;
+  submitted = false;
   selectedAll: any;
   dataReslt: any;
 
@@ -106,6 +107,10 @@ export class ConfigurationComponent implements OnInit {
         commodity.commodityName = cr.Commodity_Name;
         commodity.categoryId = cr.Category_ID;
         commodity.source = cr.Source;
+        if (this.sources.length === 0) {
+          this.sources.push("Source");
+        }
+
         if (event === 0) {
           if (this.sources.indexOf(commodity.source) === -1) {
             this.sources.push(commodity.source);
@@ -169,16 +174,20 @@ export class ConfigurationComponent implements OnInit {
     this.isEdit = false;
     this.openModal(template);
     this.btnSave = "Save New Configuration";
-    this.myForm = this.formBuilder.group({
+    this.ConfigurationForm = this.formBuilder.group({
       Id: "",
-      ddlSource: "Source",
+      ddlSource: this.sources[0],
       ddlCatagory: "Catagory",
       ddlCommodity: "Commodity",
       ddlThreshold: "Threshold",
       ddlThresholdRange: "Threshold Range",
-      txtEmail: ""
+      txtEmail: ["", [Validators.required, Validators.email]]
     });
-    // console.log(this.myForm.value);
+    // console.log(this.ConfigurationForm.value);
+  }
+
+  get f() {
+    return this.ConfigurationForm.controls;
   }
 
   private editConfiguration(config: any, template: TemplateRef<any>) {
@@ -188,7 +197,7 @@ export class ConfigurationComponent implements OnInit {
     // console.log("============================");
     // console.log(config);
     this.getCommodity(config.source);
-    this.myForm = this.formBuilder.group({
+    this.ConfigurationForm = this.formBuilder.group({
       userId: config.userId,
       Id: config.configId,
       ddlSource: config.source,
@@ -196,7 +205,7 @@ export class ConfigurationComponent implements OnInit {
       ddlCommodity: config.commodityName,
       ddlThreshold: config.thresholdId,
       ddlThresholdRange: config.thresholdRange,
-      txtEmail: config.email
+      txtEmail: [config.email, [Validators.required, Validators.email]]
     });
   }
 
@@ -226,59 +235,65 @@ export class ConfigurationComponent implements OnInit {
 
   submitForm(template: any) {
     const config = new ConfigurationModel();
-    if (!this.isEdit) {
-      // console.log(this.myForm.value);
-      config.categoryId = this.myForm.value.ddlCatagory;
-      config.categoryName = this.categories.find(
-        r => r.categoryId === this.myForm.value.ddlCatagory
-      ).categoryName;
-      config.commodityId = this.myForm.value.ddlCommodity;
-      config.commodityName = this.commodities.find(
-        r => r.commodityId === this.myForm.value.ddlCommodity
-      ).commodityName;
-      config.thresholdId = this.myForm.value.ddlThreshold;
-      config.thresholdName = this.thresholds.find(
-        r => r.thresholdId === this.myForm.value.ddlThreshold
-      ).thresholdName;
-      config.thresholdRange = this.thresholds.find(
-        r => r.thresholdId === this.myForm.value.ddlThreshold
-      ).thresholdValue;
-      config.source = this.myForm.value.ddlSource;
-      config.email = this.myForm.value.txtEmail;
-      this.configService.saveConfig(config).subscribe(data => {
-        this.dataReslt = data;
-        config.configId = this.dataReslt.body.Configuration_ID;
-        this.configs.push(config);
-      }, error => this.dataReslt = error);
+    this.submitted = true;
+    // stop here if form is invalid
+    if (this.ConfigurationForm.invalid) {
+      return false;
     } else {
-      config.configId = this.myForm.value.Id;
-      config.categoryId = this.myForm.value.ddlCatagory;
-      config.categoryName = this.categories.find(
-        r => r.categoryId === this.myForm.value.ddlCatagory
-      ).categoryName;
-      config.commodityId = this.myForm.value.ddlCommodity;
-      config.commodityName = this.commodities.find(
-        r => r.commodityId === this.myForm.value.ddlCommodity
-      ).commodityName;
-      config.thresholdId = this.myForm.value.ddlThreshold;
-      config.thresholdName = this.thresholds.find(
-        r => r.thresholdId === this.myForm.value.ddlThreshold
-      ).thresholdName;
-      config.thresholdRange = this.thresholds.find(
-        r => r.thresholdId === this.myForm.value.ddlThreshold
-      ).thresholdValue;
-      config.source = this.myForm.value.ddlSource;
-      config.userId = this.myForm.value.userId;
-      config.email = this.myForm.value.txtEmail;
-      // console.log(config);
-      this.configService.editConfig(config).subscribe(data => {
-        // console.log(data);
-        const updateItem = this.configs.find(
-          r => r.configId === config.configId
-        );
-        const index = this.configs.indexOf(updateItem);
-        this.configs[index] = config;
-      }, error => this.dataReslt = error);
+      if (!this.isEdit) {
+        // console.log(this.ConfigurationForm.value);
+        config.categoryId = this.ConfigurationForm.value.ddlCatagory;
+        config.categoryName = this.categories.find(
+          r => r.categoryId === this.ConfigurationForm.value.ddlCatagory
+        ).categoryName;
+        config.commodityId = this.ConfigurationForm.value.ddlCommodity;
+        config.commodityName = this.commodities.find(
+          r => r.commodityId === this.ConfigurationForm.value.ddlCommodity
+        ).commodityName;
+        config.thresholdId = this.ConfigurationForm.value.ddlThreshold;
+        config.thresholdName = this.thresholds.find(
+          r => r.thresholdId === this.ConfigurationForm.value.ddlThreshold
+        ).thresholdName;
+        config.thresholdRange = this.thresholds.find(
+          r => r.thresholdId === this.ConfigurationForm.value.ddlThreshold
+        ).thresholdValue;
+        config.source = this.ConfigurationForm.value.ddlSource;
+        config.email = this.ConfigurationForm.value.txtEmail;
+        this.configService.saveConfig(config).subscribe(data => {
+          this.dataReslt = data;
+          config.configId = this.dataReslt.body.Configuration_ID;
+          this.configs.push(config);
+        }, error => (this.dataReslt = error));
+      } else {
+        config.configId = this.ConfigurationForm.value.Id;
+        config.categoryId = this.ConfigurationForm.value.ddlCatagory;
+        config.categoryName = this.categories.find(
+          r => r.categoryId === this.ConfigurationForm.value.ddlCatagory
+        ).categoryName;
+        config.commodityId = this.ConfigurationForm.value.ddlCommodity;
+        config.commodityName = this.commodities.find(
+          r => r.commodityId === this.ConfigurationForm.value.ddlCommodity
+        ).commodityName;
+        config.thresholdId = this.ConfigurationForm.value.ddlThreshold;
+        config.thresholdName = this.thresholds.find(
+          r => r.thresholdId === this.ConfigurationForm.value.ddlThreshold
+        ).thresholdName;
+        config.thresholdRange = this.thresholds.find(
+          r => r.thresholdId === this.ConfigurationForm.value.ddlThreshold
+        ).thresholdValue;
+        config.source = this.ConfigurationForm.value.ddlSource;
+        config.userId = this.ConfigurationForm.value.userId;
+        config.email = this.ConfigurationForm.value.txtEmail;
+        // console.log(config);
+        this.configService.editConfig(config).subscribe(data => {
+          // console.log(data);
+          const updateItem = this.configs.find(
+            r => r.configId === config.configId
+          );
+          const index = this.configs.indexOf(updateItem);
+          this.configs[index] = config;
+        }, error => (this.dataReslt = error));
+      }
     }
     this.modalRef.hide();
   }

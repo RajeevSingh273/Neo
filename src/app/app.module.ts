@@ -1,3 +1,4 @@
+import { SelectRequiredValidatorDirective } from './shared/select.required-validator.driective';
 import { CommonService } from './services/common.service';
 import { NeoAuthGuard } from './guard/auth.guard';
 import { BrowserModule } from '@angular/platform-browser';
@@ -23,6 +24,7 @@ import { CategorydataPipe } from './filters/categorydata.pipe';
 import { CommoditydataPipe } from './filters/commoditydata.pipe';
 import { ConfigurationService } from "src/app/services/configuration.service";
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -34,7 +36,8 @@ import { ConfigurationService } from "src/app/services/configuration.service";
     CommodityComponent,
     ConfigurationComponent,
     CategorydataPipe,
-    CommoditydataPipe
+    CommoditydataPipe,
+    SelectRequiredValidatorDirective
   ],
   imports: [
     BrowserModule,

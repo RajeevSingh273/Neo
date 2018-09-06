@@ -74,6 +74,16 @@ export class ConfigurationComponent implements OnInit {
     this.getCategory();
     this.getConfigs();
     this.getThreshold();
+
+    // this.ConfigurationForm = this.formBuilder.group({
+    //   Id: "",
+    //   ddlSource: "Source",
+    //   ddlCatagory: this.categories[0].categoryName,
+    //   ddlCommodity: this.commodities[0].commodityName,
+    //   ddlThreshold: this.uniqueThresholds[0].thresholdName,
+    //   ddlThresholdRange: this.thresholds[0].thresholdValue,
+    //   txtEmail: ["", [Validators.required, Validators.email]]
+    // });
   }
 
   getCategory() {
@@ -81,6 +91,12 @@ export class ConfigurationComponent implements OnInit {
       const CategoryResult = data.Items;
       this.categories = [];
       let category: CategoryModel;
+      if (this.categories.length === 0) {
+        category = new CategoryModel();
+        category.categoryId = "-1";
+        category.categoryName = "Category";
+        this.categories.push(category);
+      }
       for (const cr of CategoryResult) {
         category = new CategoryModel();
         category.categoryId = cr.Category_Id;
@@ -101,16 +117,23 @@ export class ConfigurationComponent implements OnInit {
       this.commodities = [];
       this.sources = [];
       let commodity: CommodityModel;
+      if (this.sources.length === 0) {
+        this.sources.push("Source");
+      }
+      if (this.commodities.length === 0) {
+        commodity = new CommodityModel();
+        commodity.commodityId = -1;
+        commodity.commodityName = "Comodity";
+        commodity.categoryId = "-1";
+        commodity.source = "";
+        this.commodities.push(commodity);
+      }
       for (const cr of ComodityResult) {
         commodity = new CommodityModel();
         commodity.commodityId = cr.Commodity_ID;
         commodity.commodityName = cr.Commodity_Name;
         commodity.categoryId = cr.Category_ID;
         commodity.source = cr.Source;
-        if (this.sources.length === 0) {
-          this.sources.push("Source");
-        }
-
         if (event === 0) {
           if (this.sources.indexOf(commodity.source) === -1) {
             this.sources.push(commodity.source);
@@ -119,13 +142,9 @@ export class ConfigurationComponent implements OnInit {
           if (this.commodities.indexOf(event) === -1) {
             this.commodities.push(commodity);
           }
-          if (this.sources.indexOf(commodity.source) === -1) {
-            this.sources.push(commodity.source);
-          }
         }
       }
       this.commonService.setCommodities(this.commodities);
-      // console.log(this.commodities);
     });
   }
 
@@ -135,6 +154,21 @@ export class ConfigurationComponent implements OnInit {
       this.thresholds = [];
       this.uniqueThresholds = [];
       let threshold: ThresholdModel;
+      let unuqueThreshold: UniqueThresholds;
+      if (this.thresholds.length === 0) {
+        threshold = new ThresholdModel();
+        threshold.commodityId = -1;
+        threshold.thresholdId = -1;
+        threshold.thresholdName = "Threshold";
+        threshold.thresholdValue = "Threshold Range";
+        this.uniqueThresholds.push(threshold);
+      }
+      if (this.uniqueThresholds.length === 0) {
+        unuqueThreshold = new UniqueThresholds();
+        unuqueThreshold.thresholdId = 0;
+        unuqueThreshold.thresholdName = "Threshold";
+        this.uniqueThresholds.push(unuqueThreshold);
+      }
       for (const cr of CategoryResult) {
         threshold = new ThresholdModel();
         threshold.commodityId = cr.Commodity_ID;
@@ -177,10 +211,10 @@ export class ConfigurationComponent implements OnInit {
     this.ConfigurationForm = this.formBuilder.group({
       Id: "",
       ddlSource: this.sources[0],
-      ddlCatagory: "Catagory",
-      ddlCommodity: "Commodity",
-      ddlThreshold: "Threshold",
-      ddlThresholdRange: "Threshold Range",
+      ddlCatagory: this.categories[0].categoryName,
+      ddlCommodity: [this.commodities[0].commodityName, [Validators.required]],
+      ddlThreshold: this.uniqueThresholds[0].thresholdName,
+      ddlThresholdRange: this.thresholds[0].thresholdValue,
       txtEmail: ["", [Validators.required, Validators.email]]
     });
     // console.log(this.ConfigurationForm.value);

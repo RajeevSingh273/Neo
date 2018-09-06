@@ -115,9 +115,12 @@
           </ng-select>
         </div>
         <div class="form-group">
-          <ng-select class="p-1 custom" formControlName="ddlCommodity">
+          <ng-select class="p-1 custom" appSelectValidator="-1" formControlName="ddlCommodity" [ngClass]="{ 'is-invalid': f.ddlCommodity.touched}">
             <ng-option *ngFor="let commodity of commodities" [value]="commodity.commodityId">{{commodity.commodityName}}</ng-option>
           </ng-select>
+          <!-- <div *ngIf="f.ddlCommodity.touched && f.ddlCommodity.errors.defaultSelected" class="invalid-feedback">
+            <div *ngIf="f.ddlCommodity.errors.defaultSelected">Commodity is required</div>            
+          </div> -->
         </div>
         <div class="form-group">
           <ng-select class="p-1 custom" formControlName="ddlThreshold">
@@ -131,8 +134,8 @@
         </div>
 
         <div class="form-group">
-          <input type="email" class="form-control shadow" placeholder="Email" formControlName="txtEmail" [ngClass]="{ 'is-invalid': submitted && f.txtEmail.errors }">
-          <div *ngIf="submitted && f.txtEmail.invalid" class="invalid-feedback">
+          <input type="email" class="form-control shadow" placeholder="Email" formControlName="txtEmail" [ngClass]="{ 'is-invalid': f.txtEmail.touched && f.txtEmail.errors }">
+          <div *ngIf="f.txtEmail.touched && f.txtEmail.invalid" class="invalid-feedback">
             <div *ngIf="f.txtEmail.errors.required">Email is required</div>
             <div *ngIf="f.txtEmail.errors.email">Email must be a valid email address</div>
           </div>
@@ -140,7 +143,7 @@
       </div>
     </div>
     <div class="modal-footer text-center">
-      <button class="btn btn-info" [disabled]="!ConfigurationForm.valid">
+       <button class="btn btn-info" ><!--[disabled]="!ConfigurationForm.valid" -->
         {{btnSave}}
       </button>
     </div>

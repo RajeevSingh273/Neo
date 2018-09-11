@@ -5,7 +5,7 @@ import { map, filter, switchMap } from 'rxjs/operators';
 import { ConfigurationModel } from '../model/configuration.model';
 import { RequestOptions } from '@angular/http';
 
-const API_URL = 'https://em6cjulwtf.execute-api.ap-south-1.amazonaws.com/NeoApi/';
+const API_URL = 'https://emcadtlwtf.execute-api.ap-south-1.amazonaws.com/NeoApi/';
 
 @Injectable()
 export class AuthDomainService {
